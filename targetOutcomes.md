@@ -1,5 +1,5 @@
 # Target Outcomes
-## Article ID: 29_4_2015 PS
+## Article ID: EXT_29_4_2015
 
 For this article you should focus on the findings reported in the results section of Experiment 1.
 
