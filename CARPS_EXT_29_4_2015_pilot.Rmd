@@ -1,0 +1,415 @@
+---
+title: "CARPS Reproducibility Report"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+[PILOT/COPILOT - TEXT IN SQUARE BRACKETS IS HERE FOR GUIDANCE. COPILOT PLEASE DELETE BEFORE KNITTING THE FINAL REPORT]
+
+# Report Details
+
+[PILOT/COPILOT ENTER RELEVANT REPORT DETAILS HERE]
+
+```{r}
+articleID <- "CARPS_EXT_29_4_2015" # insert the article ID code here e.g., "10-3-2015_PS"
+reportType <- "pilot" # specify whether this is the 'pilot' report or 'final' report
+pilotNames <- "Angeline Tsui" # insert the pilot's name here e.g., "Tom Hardwicke".  If there are multiple cpilots enter both names in a character string e.g., "Tom Hardwicke, Bob Dylan"
+copilotNames <- NA # # insert the co-pilot's name here e.g., "Michael Frank". If there are multiple co-pilots enter both names in a character string e.g., "Tom Hardwicke, Bob Dylan"
+pilotTTC <- 260 # insert the pilot's estimated time to complete (in minutes, fine to approximate) e.g., 120
+copilotTTC <- NA # insert the co-pilot's estimated time to complete (in minutes, fine to approximate) e.g., 120
+pilotStartDate <- "18/10/18" # insert the pilot's start date in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
+copilotStartDate <- NA # insert the co-pilot's start date in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
+completionDate <- NA # copilot insert the date of final report completion (after any necessary rounds of author assistance) in US format e.g., as.Date("01/25/18", format = "%m/%d/%y")
+```
+
+------
+
+#### Methods summary: 
+This study investigated whether judgments of another person’s
+intellect ability can be affected by paralinguistic cues, such as the person's voice. The researchers asked M.B.A.students to provide
+spoken and written “elevator pitches”—short descriptions
+of their qualifications—that they might use with
+potential employers. The researchers asked hypothetical employers (evaluators) to watch, listen to, or read these candidates’ pitches and then evaluated the candidates’ intellect. The hypothetical employers also reported their general impressions of the candidates and indicated their interest in hiring the candidates.
+
+In Experiment 1 (**note: the only focus for the re-analysis in the paper), the researchers recruited 18 M.B.A students to provide both a spoken and a written pitch to a prospective employer. The students were asked to predict whether the potential employers will evaluate their spoken pitch and written differently. Results suggested that the students did not predict that they would be evaluated differently by the potential employers. They also did not predict a difference of the likelihood of being hired between employers listened to their spoken pitches and employers read their written pitches.
+
+The researchers recruited 162 people from a museum to evaluate the M.B.A students' pitches. the researchers randomly assigned them into three different conditions: (i) video condition:
+evaluators watched and listened to a candidate’s spoken pitch, (ii) audio condition only: evaluators listened to a spoken pitch, (iii) transcript condition: evaluators read a transcribed pitch. Each evaluator therefore observed only one candidate’s pitch in one medium. After seeing, hearing, or reading a candidate’s pitch, evaluators needed to rate (i) how competent the candidate was, (ii) how thoughtful the candidate was, (iii) how intelligent the candidate was, in comparison to an average candidate with a M.B.A degree. The researchers averaged the above three ratings to obtain a composite measure of intellect. In addition, evaluators also needed to report their general impressions of the candidates, this measure was a composite of the following ratings: (a) how much the evaluators liked the candidate, (b) how positive their overall impression of the candidate was, (c) how negative their overall impression of the candidate was. 
+
+------
+
+#### Target outcomes: 
+
+> Hypothetical  employers’  evaluations. As  predicted, evaluators’  beliefs  about  job  candidates’  intellect—their  competence, thoughtfulness, and intelligence—depended on  the  communication  medium, F(2,  157)  =  10.81, p < .01, η2 =  .12.  As  indicated  by  the  standardized  scores  shown  in  Figure  1,  evaluators  who  heard  pitches  rated the  candidates’  intellect  more  highly  (M =  0.91, SD =  1.79) than did evaluators who read transcripts of pitches (M = −0.70, SD = 2.81), t(157) = 3.79, p < .01, 95% confidence  interval  (CI)  of  the  difference  =  [0.70,  2.51], d = 0.60.  Evaluators  who  watched  pitches  did  not  evaluate the candidates’ intellect (M = 1.09, SD = 1.80) differently than evaluators who listened to pitches, t(157) < 1. Simply adding more individuating information about a candidate through visual  cues,  such  as  physical  appearance  and nonverbal  mannerisms,  had  no  measurable  impact  on  evaluations of the candidate’s mind. Candidates’ intellect was conveyed primarily through their voice.
+
+> Perhaps more important, evaluators who heard pitches also  reported  more  favorable  impressions  of  the  candidates—liked the candidates more and had more positive and  less  negative  impressions  of  the candidates—than  did evaluators who read pitches (M = 5.69, SD = 1.96, vs. M = 4.78, SD = 2.64), t(159) = 2.16, p = .03, 95% CI of the difference = [0.02, 1.80], d = 0.34 (see Fig. 1). Evaluators who heard pitches also reported being significantly more likely to hire the candidates (M = 4.34, SD = 2.26) than did evaluators who read exactly the same pitches (M = 3.06, SD = 3.15), t(156) = 2.49, p = .01, 95% CI of the difference = [0.22, 2.34], d = 0.40 (see Fig. 1). These results again did not appear to stem simply from having more individuating information about the candidates in the audio condition, because evaluators who watched pitches did not report more favorable impressions (M = 5.98, SD = 1.91) or an increased likelihood of hiring the candidates (M = 4.46, SD = 2.43) compared with evaluators who heard pitches, ts < 1.  
+
+------
+
+[PILOT/COPILOT DO NOT CHANGE THE CODE IN THE CHUNK BELOW]  
+
+```{r global_options, include=FALSE}
+# sets up some formatting options for the R Markdown document
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+# Step 1: Load packages and prepare report object
+
+[PILOT/COPILOT Some useful packages are being loaded below. You can add any additional ones you might need too.]
+
+```{r}
+# load packages
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+library(CARPSreports) # custom report functions
+library(sjstats) # for calculating effect size
+library(compute.es) #for calculating Cohen's d based on the observed and reported t stats
+```
+
+[PILOT/COPILOT DO NOT MAKE CHANGES TO THE CODE CHUNK BELOW]
+
+```{r}
+# Prepare report object. This will be updated automatically by the reproCheck function each time values are compared
+reportObject <- data.frame(dummyRow = TRUE, reportedValue = NA, obtainedValue = NA, valueType = NA, percentageError = NA, comparisonOutcome = NA, eyeballCheck = NA)
+```
+
+# Step 2: Load data
+
+```{r}
+S1 <- read_sav("data/Study1 data.sav", encoding=NULL, user_na = FALSE)
+```
+
+# Step 3: Tidy data
+
+```{r}
+```
+
+# Step 4: Run analysis
+
+## Pre-processing
+
+[you can remove this section if no pre-processing is required]
+
+```{r}
+```
+
+## Descriptive statistics
+
+```{r}
+#Descriptive stats for the variable "intellect"
+intellect_gp <- group_by(S1, Condition)
+intellect_values <- summarise(intellect_gp, average_intellect=round(mean(intellect, na.rm=TRUE), digits=2), sd_intellect_gp=round(sd(intellect, na.rm=TRUE), digits=2)) #means and sd of intellect rating across different conditions.
+Means_intellect_gp <- select(intellect_values, Condition, average_intellect)
+SD_intellect_gp <- select(intellect_values, Condition, sd_intellect_gp)
+
+#reproCheck for mean intellect in the audio condition
+reportObject <- reproCheck(reportedValue = "0.91", 
+                           obtainedValue = filter(Means_intellect_gp, Condition == "audio")%>%pull(average_intellect),
+                           valueType = "mean")
+#reproCheck for mean intellect in the transcript condition
+reportObject <- reproCheck(reportedValue = "-0.70", 
+                           obtainedValue = filter(Means_intellect_gp, Condition == "transcript")%>%pull(average_intellect),
+                           valueType = "mean")
+#reproCheck for mean intellect in the video condition
+reportObject <- reproCheck(reportedValue = "1.09", 
+                           obtainedValue = filter(Means_intellect_gp, Condition == "video")%>%pull(average_intellect),
+                           valueType = "mean")
+#reproCheck for intellect S.D. in the audio condition
+reportObject <- reproCheck(reportedValue = "1.79", 
+                           obtainedValue = filter(SD_intellect_gp, Condition == "audio")%>%pull(sd_intellect_gp),
+                           valueType = "sd")
+#reproCheck for intellect S.D. in the transcript condition
+reportObject <- reproCheck(reportedValue = "2.81", 
+                           obtainedValue = filter(SD_intellect_gp, Condition == "transcript")%>%pull(sd_intellect_gp),
+                           valueType = "sd")
+#reproCheck for intellect S.D. in the video condition
+reportObject <- reproCheck(reportedValue = "1.80", 
+                           obtainedValue = filter(SD_intellect_gp, Condition == "video")%>%pull(sd_intellect_gp),
+                           valueType = "sd")
+
+#Descriptive stats for the variable "impression"
+impression_gp <- group_by(S1, Condition)
+impression_values <- summarise(impression_gp, average_impression=round(mean(impression, na.rm=TRUE), digits=2), sd_impression=round(sd(impression, na.rm=TRUE), digits = 2)) #means and sd of impression rating across different conditions.
+Means_impression_gp <- select(impression_values, Condition, average_impression)
+SD_impression_gp <- select(impression_values, Condition, sd_impression)
+
+#reproCheck for mean impression in the audio condition
+reportObject <- reproCheck(reportedValue = "5.69", 
+                           obtainedValue = filter(Means_impression_gp, Condition == "audio")%>%pull(average_impression),
+                           valueType = "mean")
+#reproCheck for mean impression in the transcript condition
+reportObject <- reproCheck(reportedValue = "4.78", 
+                           obtainedValue = filter(Means_impression_gp, Condition == "transcript")%>%pull(average_impression),
+                           valueType = "mean")
+#reproCheck for mean impression in the video condition
+reportObject <- reproCheck(reportedValue = "5.98", 
+                           obtainedValue = filter(Means_impression_gp, Condition == "video")%>%pull(average_impression),
+                           valueType = "mean")
+#reproCheck for impression S.D. in the audio condition
+reportObject <- reproCheck(reportedValue = "1.96", 
+                           obtainedValue = filter(SD_impression_gp, Condition == "audio")%>%pull(sd_impression),
+                           valueType = "sd")
+#reproCheck for impression S.D. in the transcript condition
+reportObject <- reproCheck(reportedValue = "2.64", 
+                           obtainedValue = filter(SD_impression_gp, Condition == "transcript")%>%pull(sd_impression),
+                           valueType = "sd")
+#reproCheck for impression S.D. in the video condition
+reportObject <- reproCheck(reportedValue = "1.91", 
+                           obtainedValue = filter(SD_impression_gp, Condition == "video")%>%pull(sd_impression),
+                           valueType = "sd")
+
+#Descriptive stats for the variable "hiring"
+hiring_gp <- group_by(S1, Condition)
+hiring_values <- summarise(hiring_gp, average_hiring=round(mean(hire, na.rm=TRUE), digits=2), sd_hire=round(sd(hire, na.rm=TRUE), digits=2)) #means and sd of hiring rating across different conditions.
+Means_hiring_gp <- select(hiring_values, Condition, average_hiring)
+SD_hiring_gp <- select(hiring_values, Condition, sd_hire)
+
+#reproCheck for mean hiring in the audio condition
+reportObject <- reproCheck(reportedValue = "4.34", 
+                           obtainedValue = filter(Means_hiring_gp, Condition == "audio")%>%pull(average_hiring),
+                           valueType = "mean")
+#reproCheck for mean hiring in the transcript condition
+reportObject <- reproCheck(reportedValue = "3.06", 
+                           obtainedValue = filter(Means_hiring_gp, Condition == "transcript")%>%pull(average_hiring),
+                           valueType = "mean")
+#reproCheck for mean hiriing in the video condition
+reportObject <- reproCheck(reportedValue = "4.46", 
+                           obtainedValue = filter(Means_hiring_gp, Condition == "video")%>%pull(average_hiring),
+                           valueType = "mean")
+#reproCheck for hiring S.D. in the audio condition
+reportObject <- reproCheck(reportedValue = "2.26", 
+                           obtainedValue = filter(SD_hiring_gp, Condition == "audio")%>%pull(sd_hire),
+                           valueType = "sd")
+#reproCheck for hiriing S.D. in the transcript condition
+reportObject <- reproCheck(reportedValue = "3.15", 
+                           obtainedValue = filter(SD_hiring_gp, Condition == "transcript")%>%pull(sd_hire),
+                           valueType = "sd")
+#reproCheck for hiriing S.D. in the video condition
+reportObject <- reproCheck(reportedValue = "2.43", 
+                           obtainedValue = filter(SD_hiring_gp, Condition == "video")%>%pull(sd_hire),
+                           valueType = "sd")
+
+#All descriptive stats are correct!
+```
+
+## Inferential statistics
+
+```{r}
+#one-way ANOVA for the variable intellect
+intellect_ANOVA <- aov(intellect~Condition, data=S1)
+intellect_ANOVA_summary <- summary(intellect_ANOVA)
+reportObject <- reproCheck(reportedValue="2", obtainedValue=intellect_ANOVA_summary[[1]]$Df[1], valueType="df")
+reportObject <- reproCheck(reportedValue="157", obtainedValue=intellect_ANOVA_summary[[1]]$Df[2], valueType="df")
+reportObject <- reproCheck(reportedValue="10.81", obtainedValue=intellect_ANOVA_summary[[1]]$`F value`[1], valueType="F")
+#reprocheck for the p value of the one-way ANOVA
+intellect_F_p_value <- 3.99e-05
+reportObject <- reproCheck(reportedValue="<0.01", obtainedValue=intellect_F_p_value, valueType="p", eyeballCheck = TRUE)
+#reprocheck for the effect size
+eta_sq_intellect <- eta_sq(intellect_ANOVA) #effect size
+reportObject <- reproCheck(reportedValue="0.12", obtainedValue=select(eta_sq_intellect, etasq), valueType="other")
+#All stats in the one-way ANOVA are correct
+
+#Contrasts comparsion 
+S2 <- select(S1, Condition, intellect)
+S2$Condition <- relevel(factor(S2$Condition), ref="audio") 
+levels(S2$Condition)
+c_audio_transcript <- c(1,-1,0)
+c_audio_video <- c(1, 0, -1)
+mat <- cbind(c_audio_transcript, c_audio_video)
+contrasts(S2$Condition) <- mat
+model1 <- aov(intellect~Condition, data=S2)
+summary(model1)
+com_sum <- summary.lm(model1, split=list(Condition=list("audio vs transcript"=1, "audio vs video"=2)))
+com_sum
+str(com_sum) #com_sum$coefficients[8] is the t value for contrast comparsion btw audio and transcript
+#com_sum$coefficients[11] is the p value for contrast btw audio and transcript
+#com_sum$coefficients[9] is the t value for contrast comparsion btw audio and video
+#com_sum$coefficients[12] is the p value for contrast btw audio and video
+#reprocheck for the t stats 
+reportObject <- reproCheck(reportedValue="3.79", obtainedValue=com_sum$coefficients[8], valueType="t") #t value btw audio and transcript
+reportObject <- reproCheck(reportedValue="<1",obtainedValue=com_sum$coefficients[9], valueType="t", eyeballCheck =TRUE) #t value btw audio and video
+#reprocheck for p values
+reportObject <- reproCheck(reportedValue="<0.01", obtainedValue=com_sum$coefficients[11], valueType="p", eyeballCheck = TRUE) #p value for contrast btw audio and transcript
+reportObject <- reproCheck(reportedValue="<0.01", obtainedValue=com_sum$coefficients[12], valueType="p", eyeballCheck = TRUE) #p value for contrast btwe audio and video
+#95% confidence interval for the contrast btw audio and transcript
+conf_int <- confint(model1, level=0.95)
+low_conf_int_audio_transcript <- conf_int[2,1]
+up_conf_int_audio_transcript <- conf_int[2,2]
+#reprocheck for 95% CI
+reportObject <- reproCheck(reportedValue="0.70", obtainedValue=low_conf_int_audio_transcript, valueType="other") #lower boundary 
+reportObject <- reproCheck(reportedValue="2.51", obtainedValue=up_conf_int_audio_transcript, valueType="other") #upper boundary 
+#Cohen's d for the difference btw audio and transcript
+#each speaker has produced both speech and transcript, so the sample sizes across condition should be the same (i.e., 162/3= 54) 
+es_observed <- tes(4.63, 54, 54) #based on observed t
+es_reported <- tes(3.79, 54, 54) #based on reported t
+d_observed <- es_observed[,4]
+d_reported <- es_reported[,4]
+#reprocheck for the effect size reported in the paper and those calculated here
+reportObject <- reproCheck(reportedValue="0.60", obtainedValue=d_observed, valueType="other")
+reportObject <- reproCheck(reportedValue="0.60", obtainedValue=d_reported, valueType="other")
+#unfortunately, the stats of the contrast comparsion are different from those reported.
+#Note from AT: I want to discuss with the person who co-pilot this study. something is weird as if I use summary.aov() to run the contrast comparisons, the summary will give the F stats that better match the authors' reported t stats. I also looked over the SPSS syntax and I did not see anything wrong. I also think that the authors were using an uncorrected comparsions, so it may be not driven by the use of other methods to correct family-wise Type I error. 
+
+
+#one-way ANOVA for the variable impression
+impression_ANOVA <- aov(impression~Condition, data=S1)
+summary(impression_ANOVA)
+
+#Contrasts comparsion 
+S3 <- select(S1, Condition, impression)
+S3$Condition <- relevel(factor(S3$Condition), ref="audio") 
+levels(S3$Condition)
+c_audio_transcript <- c(1,-1,0)
+c_audio_video <- c(1, 0, -1)
+mat1 <- cbind(c_audio_transcript, c_audio_video)
+contrasts(S3$Condition) <- mat1
+model2 <- aov(impression~Condition, data=S3)
+summary(model2)
+com_sum2 <- summary.lm(model2, split=list(Condition=list("audio vs transcript"=1, "audio vs video"=2)))
+com_sum2
+#com_sum2$coefficients[8] is the t value for contrast comparsion btw audio and transcript
+#com_sum2$coefficients[11] is the p value for contrast btw audio and transcript
+#com_sum2$coefficients[9] is the t value for contrast comparsion btw audio and video
+#com_sum2$coefficients[12] is the p value for contrast btw audio and video
+#reprocheck for the t stats 
+reportObject <- reproCheck(reportedValue="2.16", obtainedValue=com_sum2$coefficients[8], valueType="t") #t value btw audio and transcript
+reportObject <- reproCheck(reportedValue="<1",obtainedValue=com_sum2$coefficients[9], valueType="t", eyeballCheck =TRUE) #t value btw audio and video
+#reprocheck for p values
+reportObject <- reproCheck(reportedValue="0.03", obtainedValue=com_sum2$coefficients[11], valueType="p") #p value for contrast btw audio and transcript
+#95% confidence interval for the contrast btw audio and transcript
+conf_int2 <- confint(model2, level=0.95)
+low_conf_int_audio_transcript2 <- conf_int2[2,1]
+up_conf_int_audio_transcript2 <- conf_int2[2,2]
+#reprocheck for 95% CI
+reportObject <- reproCheck(reportedValue="0.02", obtainedValue=low_conf_int_audio_transcript2, valueType="other") #lower boundary 
+reportObject <- reproCheck(reportedValue="1.80", obtainedValue=up_conf_int_audio_transcript2, valueType="other") #upper boundary 
+#Cohen's d for the difference btw audio and transcript
+#each speaker has produced both speech and transcript, so the sample sizes across condition should be the same (i.e., 162/3= 54) 
+es_observed2 <- tes(2.88, 54, 54) #based on observed t
+es_reported2 <- tes(2.16, 54, 54) #based on reported t
+d_observed2 <- es_observed2[,4]
+d_reported2 <- es_reported2[,4]
+#reprocheck for the effect size reported in the paper and those calculated here
+reportObject <- reproCheck(reportedValue="0.34", obtainedValue=d_observed2, valueType="other")
+reportObject <- reproCheck(reportedValue="0.34", obtainedValue=d_reported2, valueType="other")
+#unfortunately, the stats of the contrast comparsion are different from those reported.
+
+#one-way ANOVA for the variable hiring
+hiring_ANOVA <- aov(hire~Condition, data=S1)
+summary(hiring_ANOVA)
+
+#Contrasts comparsion 
+S4 <- select(S1, Condition, hire)
+S4$Condition <- relevel(factor(S4$Condition), ref="audio") 
+levels(S4$Condition)
+c_audio_transcript <- c(1,-1,0)
+c_audio_video <- c(1, 0, -1)
+mat2 <- cbind(c_audio_transcript, c_audio_video)
+contrasts(S4$Condition) <- mat2
+model3 <- aov(hire~Condition, data=S4)
+summary(model3)
+com_sum3 <- summary.lm(model3, split=list(Condition=list("audio vs transcript"=1, "audio vs video"=2)))
+com_sum3
+#com_sum3$coefficients[8] is the t value for contrast comparsion btw audio and transcript
+#com_sum3$coefficients[11] is the p value for contrast btw audio and transcript
+#com_sum3$coefficients[9] is the t value for contrast comparsion btw audio and video
+#com_sum3$coefficients[12] is the p value for contrast btw audio and video
+#reprocheck for the t stats 
+reportObject <- reproCheck(reportedValue="2.49", obtainedValue=com_sum3$coefficients[8], valueType="t") #t value btw audio and transcript
+reportObject <- reproCheck(reportedValue="<1",obtainedValue=com_sum3$coefficients[9], valueType="t", eyeballCheck =TRUE) #t value btw audio and video
+#reprocheck for p values
+reportObject <- reproCheck(reportedValue="0.01", obtainedValue=com_sum3$coefficients[11], valueType="p") #p value for contrast btw audio and transcript
+#95% confidence interval for the contrast btw audio and transcript
+conf_int3 <- confint(model3, level=0.95)
+low_conf_int_audio_transcript3 <- conf_int3[2,1]
+up_conf_int_audio_transcript3 <- conf_int3[2,2]
+#reprocheck for 95% CI
+reportObject <- reproCheck(reportedValue="0.22", obtainedValue=low_conf_int_audio_transcript3, valueType="other") #lower boundary 
+reportObject <- reproCheck(reportedValue="2.34", obtainedValue=up_conf_int_audio_transcript3, valueType="other") #upper boundary 
+es_observed3 <- tes(3.01, 54, 54) #based on observed t
+es_reported3 <- tes(2.49, 54, 54) #based on reported t
+d_observed3 <- es_observed3[,4]
+d_reported3 <- es_reported3[,4]
+#reprocheck for the effect size reported in the paper and those calculated here
+reportObject <- reproCheck(reportedValue="0.4", obtainedValue=d_observed3, valueType="other")
+reportObject <- reproCheck(reportedValue="0.4", obtainedValue=d_reported3, valueType="other")
+#unfortunately, the stats of the contrast comparsion are different from those reported.
+```
+
+# Step 5: Conclusion
+
+[Please include a text summary describing your findings. If this reproducibility check was a failure, you should note any suggestions as to what you think the likely cause(s) might be.]
+  
+[PILOT/COPILOT ENTER RELEVANT INFORMATION BELOW]
+
+```{r}
+Author_Assistance = FALSE # was author assistance provided? (if so, enter TRUE)
+
+Insufficient_Information_Errors <- 0 # how many discrete insufficient information issues did you encounter?
+
+# Assess the causal locus (discrete reproducibility issues) of any reproducibility errors. Note that there doesn't necessarily have to be a one-to-one correspondance between discrete reproducibility issues and reproducibility errors. For example, it could be that the original article neglects to mention that a Greenhouse-Geisser correct was applied to ANOVA outcomes. This might result in multiple reproducibility errors, but there is a single causal locus (discrete reproducibility issue).
+
+locus_typo <- NA # how many discrete issues did you encounter that related to typographical errors?
+locus_specification <- NA # how many discrete issues did you encounter that related to incomplete, incorrect, or unclear specification of the original analyses?
+locus_analysis <- NA # how many discrete issues did you encounter that related to errors in the authors' original analyses?
+locus_data <- NA # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
+locus_unidentified <- NA # how many discrete issues were there for which you could not identify the cause
+
+# How many of the above issues were resolved through author assistance?
+locus_typo_resolved <- NA # how many discrete issues did you encounter that related to typographical errors?
+locus_specification_resolved <- NA # how many discrete issues did you encounter that related to incomplete, incorrect, or unclear specification of the original analyses?
+locus_analysis_resolved <- NA # how many discrete issues did you encounter that related to errors in the authors' original analyses?
+locus_data_resolved <- NA # how many discrete issues did you encounter that related to errors in the data files shared by the authors?
+locus_unidentified_resolved <- NA # how many discrete issues were there for which you could not identify the cause
+
+Affects_Conclusion <- NA # Do any reproducibility issues encounter appear to affect the conclusions made in the original article? TRUE, FALSE, or NA. This is a subjective judgement, but you should taking into account multiple factors, such as the presence/absence of decision errors, the number of target outcomes that could not be reproduced, the type of outcomes that could or could not be reproduced, the difference in magnitude of effect sizes, and the predictions of the specific hypothesis under scrutiny.
+```
+
+[PILOT/COPILOT DOD NOT EDIT THE CODE CHUNK BELOW]
+
+```{r}
+reportObject <- reportObject %>%
+  filter(dummyRow == FALSE) %>% # remove the dummy row
+  select(-dummyRow) %>% # remove dummy row designation
+  mutate(articleID = articleID) %>% # add variables to report 
+  select(articleID, everything()) # make articleID first column
+
+# decide on final outcome
+if(any(reportObject$comparisonOutcome %in% c("MAJOR_ERROR", "DECISION_ERROR")) | Insufficient_Information_Errors > 0){
+  finalOutcome <- "Failure without author assistance"
+  if(Author_Assistance == T){
+    finalOutcome <- "Failure despite author assistance"
+  }
+}else{
+  finalOutcome <- "Success without author assistance"
+  if(Author_Assistance == T){
+    finalOutcome <- "Success with author assistance"
+  }
+}
+
+# collate report extra details
+reportExtras <- data.frame(articleID, pilotNames, copilotNames, pilotTTC, copilotTTC, pilotStartDate, copilotStartDate, completionDate, Author_Assistance, finalOutcome, Insufficient_Information_Errors, locus_typo, locus_specification, locus_analysis, locus_data, locus_unidentified, locus_typo_resolved, locus_specification_resolved, locus_analysis_resolved, locus_data_resolved, locus_unidentified_resolved)
+
+# save report objects
+if(reportType == "pilot"){
+  write_csv(reportObject, "pilotReportDetailed.csv")
+  write_csv(reportExtras, "pilotReportExtras.csv")
+}
+
+if(reportType == "final"){
+  write_csv(reportObject, "finalReportDetailed.csv")
+  write_csv(reportExtras, "finalReportExtras.csv")
+}
+```
+
+# Session information
+
+[This function will output information about the package versions used in this report:]
+
+```{r session_info, include=TRUE, echo=TRUE, results='markup'}
+devtools::session_info()
+```
