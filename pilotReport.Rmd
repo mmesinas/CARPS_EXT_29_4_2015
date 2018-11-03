@@ -76,11 +76,16 @@ reportObject <- data.frame(dummyRow = TRUE, reportedValue = NA, obtainedValue = 
 # Step 2: Load data
 
 ```{r}
+data <- read_sav("/Users/melissamesinas/Documents/GitHub/CARPS_EXT_29_4_2015/data/Study1 data.sav")
+
+data <- read_sav("data/Study1 data.sav")
+
 ```
 
 # Step 3: Tidy data
 
 ```{r}
+
 ```
 
 # Step 4: Run analysis
