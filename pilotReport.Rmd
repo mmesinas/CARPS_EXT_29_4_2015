@@ -85,7 +85,7 @@ data <- read_sav("data/Study1 data.sav")
 # Step 3: Tidy data
 
 ```{r}
-
+#Data is already tidy
 ```
 
 # Step 4: Run analysis
@@ -95,16 +95,23 @@ data <- read_sav("data/Study1 data.sav")
 [you can remove this section if no pre-processing is required]
 
 ```{r}
+#I don't think I need to do pre-processing 
 ```
 
 ## Descriptive statistics
 
 ```{r}
+data <- read_sav("data/Study1 data.sav")
+pop_mean <- mean("")
 ```
 
 ## Inferential statistics
 
 ```{r}
+# Compute the analysis of variance
+res.aov <- aov(intellect ~ Condition, data = data)
+# Summary of the analysis
+summary(res.aov)
 ```
 
 # Step 5: Conclusion
